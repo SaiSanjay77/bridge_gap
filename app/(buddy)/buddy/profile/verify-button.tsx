@@ -1,20 +1,16 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { verifyBuddy } from "../../actions"; // We'll try to use the action if it exists, or just simulate
-
-export function VerifyButton({ buddyId }: { buddyId: string }) {
+import { verifyBuddy } from "../../actions"; 
+export function VerifyButton() {
   const [loading, setLoading] = useState(false);
-
   const handleVerify = async () => {
     setLoading(true);
     try {
-        // Since we are rewriting, calling the server action is the right way if it exists. 
-        // If not, we'll simulate behavior or fail gracefully.
-        // Assuming verifyBuddy is a server action imported from parent
-        await verifyBuddy(buddyId); 
+        // Updated: Calling without arguments if your action handles auth internally
+        // or ensure buddyId matches the action signature.
+        await verifyBuddy(); 
         toast.success("Verification request sent!");
     } catch (e) {
         toast.error("Failed to send verification.");
@@ -22,7 +18,6 @@ export function VerifyButton({ buddyId }: { buddyId: string }) {
         setLoading(false);
     }
   };
-
   return (
     <Button 
       onClick={handleVerify} 
