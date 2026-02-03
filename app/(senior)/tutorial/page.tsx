@@ -40,8 +40,7 @@ const slides = [
 
 export default function SeniorTutorialPage() {
   const [step, setStep] = useState(0);
-  const { language } = useLanguage();
-
+  const { language = "en" } = useLanguage() || {};
   const currentSlide = slides[step];
   const isLast = step === slides.length - 1;
 
