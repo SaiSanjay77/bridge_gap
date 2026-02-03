@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signupAction } from "./actions";
@@ -34,7 +34,7 @@ interface FormData {
   skills?: string;
 }
 
-export default function SignUpPage() {
+function SignUpContent() {
   const [selectedRole, setSelectedRole] = useState<Role>(null);
   const [step, setStep] = useState<"role" | "form" | "success">("role");
   const [formData, setFormData] = useState<FormData>({
@@ -484,5 +484,13 @@ export default function SignUpPage() {
         </Card>
       </motion.div>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <SignUpContent />
+    </Suspense>
   );
 }
