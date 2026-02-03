@@ -105,7 +105,7 @@ export default async function BuddyProfilePage() {
                       <Clock className="h-4 w-4 mr-1.5" />
                       Pending Verification
                     </Badge>
-                    <VerifyButton buddyId={user.id} />
+                    <VerifyButton />
                   </div>
                 )}
               </div>
