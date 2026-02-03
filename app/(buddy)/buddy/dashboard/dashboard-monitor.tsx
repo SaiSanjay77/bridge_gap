@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 
 export function DashboardMonitor({ userId }: { userId: string }) {
   const router = useRouter();
@@ -12,7 +13,7 @@ export function DashboardMonitor({ userId }: { userId: string }) {
   useEffect(() => {
     // Play sound helper
     const playNotificationSound = () => {
-      const audio = new Audio("/notification.mp3"); // Assuming file exists or fails silently
+      const audio = new Audio("/notification.mp3");
       audio.play().catch(() => {});
     };
 
@@ -26,7 +27,8 @@ export function DashboardMonitor({ userId }: { userId: string }) {
           table: "help_requests",
           filter: "status=eq.pending",
         },
-        (payload) => {
+        // Fixed: Added explicit type for the payload to satisfy the TypeScript compiler
+        (payload: RealtimePostgresInsertPayload<any>) => {
           console.log("New request!", payload);
           playNotificationSound();
           toast.info("New Senior Needs Help!", {
