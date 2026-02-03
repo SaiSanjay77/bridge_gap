@@ -131,7 +131,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Load persisted language
+    // Load persisted language - only runs in the browser
     const stored = localStorage.getItem(STORAGE_KEY) as Language;
     if (stored && (stored === "en" || stored === "ta")) {
       setLanguageState(stored);
@@ -142,8 +142,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem(STORAGE_KEY, lang);
-    document.body.setAttribute("data-language", lang);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, lang);
+      document.body.setAttribute("data-language", lang);
+    }
   }, []);
 
   const t = useCallback(
@@ -161,6 +163,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// Fixed: Exporting both names to satisfy the tutorial page and your other components
 export function useTranslation() {
   const context = useContext(LanguageContext);
   if (context === undefined) {
@@ -168,3 +171,5 @@ export function useTranslation() {
   }
   return context;
 }
+
+export const useLanguage = useTranslation;
